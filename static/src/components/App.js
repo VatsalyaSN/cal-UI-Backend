@@ -25,6 +25,12 @@ function mapStateToProps(state){
 		username:state.auth.username,
 		statusText : state.auth.statusText,
 		id : state.auth.id,
+		details : state.month.details,
+		popupItem : state.month.popupItem,
+		lastWeek : state.month.lastWeek,
+		nextWeek : state.month.nextWeek,
+		showMoreWeek : state.month.showMoreWeek,
+		detailsWeek:state.month.detailsWeek,
 	}
 }
 

@@ -8,6 +8,36 @@ function checkIfNotLeapYear(state){
  	}
 }
 
+
+function getNextMonthWeek(state,newArr,nextweek,flag){
+	var x=0,z=1;
+	if(flag == 0)
+	{
+		if(newArr[5][0] != ' '){
+			x = newArr[5].filter(function(i){return i == " "});
+		}
+		else if(newArr[4][6] == ' ')
+			x = newArr[4].filter(function(i){return i == " "});
+
+		for(var k=0;k<7-x.length;k++)
+			nextweek[k] = " ";
+
+		for(var k=7-x.length;k<7;k++ )
+		{
+			nextweek[k] = z++;
+		}
+	}
+	
+	else
+		{
+		console.log("NEXT WEEK",state.date[0],flag)
+		if(state.date[0][0] == " ")
+			nextweek = state.date[0];
+	}
+	return nextweek;
+
+}
+
 function getCurrentMonth(state,d,nextValue,flag){
 			var monthArray = state.monthArray;
 			var objNew = {};
@@ -16,7 +46,10 @@ function getCurrentMonth(state,d,nextValue,flag){
 			var dayOfCurrentMonth = currentDate.getDay();
 			var newArr = [new Array(),new Array(),new Array(),new Array(),new Array(),new Array()];
 			var x=1;
+			var z=1;
 			var currentMonth = state.dateArray[d.getMonth()+nextValue]
+			var nextweek=[];
+			var lastweek = [];
 			// console.log(currentMonth);
 			for(var i=0;i<6; i++){
 				for(var j=0;j<7;j++)
@@ -30,6 +63,7 @@ function getCurrentMonth(state,d,nextValue,flag){
 				         }
 				}
 			}	
+
 			if(flag===0)
 				objNew = Object.assign({},state,
 				 {nextWeekValue : 0, months :state.monthArray[d.getMonth()+nextValue],date : newArr,
@@ -138,20 +172,29 @@ function getOnLoadResult(state){
 		return Object.assign({},state,{weekDate : state.date[0], nextWeekValue : 0})
 }
 
-function toggleShowMore(state,id,show) {
+function toggleShowMore(state,id,show,button,item) {
+	// console.log("DATE ID..",id)
 	var i,j;
 	var arr = [new Array(),new Array(),new Array(),new Array(),new Array(),new Array()];
 	for(i=0;i<state.date.length;i++){
 		for(j=0;j<state.date[i].length;j++){
 			if(state.date[i][j] == id)
 			{
-				arr[i][j] = show;
+				arr[i][j] = show
 			}
 			else
 				arr[i][j] = 0;
 		}
 	}
-	return Object.assign({},state,{showMore:arr})
+	if(button == "more")
+		return Object.assign({},state,{showMore:arr})
+	else
+	{
+		if(show == true)
+			return Object.assign({},state,{details : arr,popupItem : item})
+		else
+			return Object.assign({},state,{details:arr})
+	}
 }
 
 
@@ -220,10 +263,10 @@ function monthReducer(state={}, action){
 						return Object.assign({},state,{eventStoreMonth : action.newList});
 
 				case "SET_BUTTON":
-						return toggleShowMore(state,action.id,true);
+					return toggleShowMore(state,action.id,true,action.button,"");
 
 				case "CLOSE_DETAIL":
-						return toggleShowMore(state,action.id,false);
+					return toggleShowMore(state,action.id,false,action.button,"");
 
 				case "MONTH_CLEAR":
 						return Object.assign({},state,{eventStoreMonth : []});
@@ -231,6 +274,13 @@ function monthReducer(state={}, action){
 				case "WEEK_CLEAR":
 						return Object.assign({},state,{eventStore : []});
 				
+				case "HANDLE_DETAILS":
+					return toggleShowMore(state,action.id,true,action.button,action.item);
+				
+				case "APPEND_LETTER":
+					console.log("FROM APPEND_LETTER", state.popupItem+action.x)
+					return Object.assign({},state,{popupItem : state.popupItem+action.x})
+
 				default : 
 						return state;
 			}

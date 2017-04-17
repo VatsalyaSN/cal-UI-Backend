@@ -37,8 +37,13 @@ const CalenderView = React.createClass({
 			}
 		})
 		// console.log("SHOWMORE>>> ",this.props.showMore[x]);
+		// console.log("DETAILS >> ",this.props.details[x],x);
 		if(this.props.showMore[x] != undefined)
-		return <TableBody date={date} item={items} moreButtonAction={moreButtonAction} showMore={this.props.showMore[x]} closeDetail={this.props.closeDetail} month={this.props.months}/>
+		return <TableBody date={date} item={items} moreButtonAction={moreButtonAction} 
+					showMore={this.props.showMore[x]} closeDetail={this.props.closeDetail} 
+					month={this.props.months} details={this.props.details[x]} 
+					handleDetails={this.props.handleDetails} popupItem={this.props.popupItem}
+					deleteEventList={this.props.deleteEventList}/>
 
 	},
 
@@ -64,7 +69,8 @@ const CalenderView = React.createClass({
 						this.renderEvents(this.props.event,this.props.date[4],this.props.moreButton,4)
 					}
 					{
-						this.props.date[5][0]!=" " ? this.renderEvents(this.props.event,this.props.date[5],this.props.moreButton,5) : null
+						this.props.date[5][0]!=" " ? 
+						this.renderEvents(this.props.event,this.props.date[5],this.props.moreButton,5) : null
 					}
 					</tbody>
 				</table>

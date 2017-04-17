@@ -4,7 +4,7 @@ import jwtDecode from 'jwt-decode';
 
 
 function create_user(email,username,password){
-	console.log("IN axios");
+	// console.log("IN axios");
 	return axios.post('/api/create_user',{
 		email,
 		username,
@@ -120,8 +120,8 @@ export function loginUser(email,password){
 //EVENT 
 
 function addEvent(date,starttime,endtime,event_detail,id,email){
-	console.log("ADD EVENT API >>>>>>>>")
-	console.log(date,starttime,endtime,event_detail)
+	// console.log("ADD EVENT API >>>>>>>>")
+	// console.log(date,starttime,endtime,event_detail)
 	return axios.post('/api/event',{
 		date,
 		starttime,
@@ -165,21 +165,29 @@ export function addEventList(date,starttime,endtime,event,id,email){
 			.then(parseJSON)
 			.then(response => {
 				try{
-					console.log(response.event);
-					console.log(response.event.time);
+					// console.log(response.event);
+					// console.log(response.event.time);
 					dispatch(displayEvent(response.event));
 				}catch(e){
-					console.log("Error with event render",e);
+					// console.log("Error with event render",e);
 					alert(e);
 				}
 			})
 	}
 }
 
+
+function deleteEvent(id){
+	return axios.post('/api/deleteEvent',{
+		id
+	})
+}
+
+
+
 function getEvents(id){
-	console.log("INTO GETEVENTSS")
 	return axios.post('/api/eventList',{
-		id : id
+		id
 	})
 }
 
@@ -200,7 +208,8 @@ export function handleEventOnload(id,email){
 							date:detail.date,
 							starttime:detail.starttime,
 							endtime:detail.endtime,
-							event_detail:detail.event_detail
+							event_detail:detail.event_detail,
+							event_id : detail.event_id
 						}
 						dispatch(displayEvent(data));
 						})
@@ -264,12 +273,12 @@ export function logoutAndRedirect(){
 function getWeeklyEvent(state){
 	var currentEvent=[];
 	var date;
-	console.log(state.event.length);
+	// console.log(state.event.length);
 	for(var i=0;i<state.event.length;i++){
 
 		for(var k=0;k<state.weekDate.length;k++){
 			if(state.weekDate[k] != " "){
-				console.log("IN HERE")
+				// console.log("IN HERE")
 				date = state.year+"-"+('0' + (state.monthArray.indexOf(state.months)+1)).slice(-2)+"-"+('0' + state.weekDate[k]).slice(-2);
 				if(date == state.event[i].dateItem)
 				{
@@ -280,7 +289,7 @@ function getWeeklyEvent(state){
 		}
 		
 	}
-	console.log("CURRENT EVENT>>>",currentEvent);
+	// console.log("CURRENT EVENT>>>",currentEvent);
 	return currentEvent;
 	
 }
@@ -293,7 +302,7 @@ export function loadEvent(state){
 	var timeslot = [];
 	var i,j;
 	
-	console.log("FROM LOADEVENT ",state);
+	// console.log("FROM LOADEVENT ",state);
 	var newList = getWeeklyEvent(state);
 	
 	for(j=0;j<1440;j++){
@@ -323,7 +332,7 @@ export function loadEvent(state){
 			event.height = event.end - event.start;
 			finalList.push(event);
 		}
-		console.log("FINALOS++IST ",finalList);
+		// console.log("FINALOS++IST ",finalList);
 
 	
 	return{
@@ -335,14 +344,14 @@ export function loadEvent(state){
 
 export function loadMonthEvent(state){
 	var newList=[];
-console.log("load month events >>> ",state)
+// console.log("load month events >>> ",state)
 	for(var i=0;i<state.event.length;i++){
 		console.log(state.event[i].dateItem.slice(5,7))
 		if(('0' + (state.monthArray.indexOf(state.months)+1)).slice(-2) == state.event[i].dateItem.slice(5,7) && state.year == state.event[i].dateItem.slice(0,4)){
 			newList.push(state.event[i]);
 		}
 	}
-	console.log("new list ",newList);
+	// console.log("new list ",newList);
 	return{
 		type:'EVENT_MAPPING_MONTH',
 		newList
@@ -414,7 +423,7 @@ export function handleNext(state){
 
 
 export function handlePrevious(state) {
-	console.log("HANDLE PREVIOUS>>",state);
+	// console.log("HANDLE PREVIOUS>>",state);
 	return function(dispatch,getState){
 		dispatch({
 		type : "HANDLE_PREVIOUS",
@@ -534,13 +543,104 @@ export function handleOnload(viewType){
 export function moreButton(id){
 	return {
 		type : "SET_BUTTON",
+		id:id,
+		button : "more"
+	}
+}
+
+export function closeDetail(id,button){
+	console.log("ID IN ACTION CLOSE",id);
+	return{
+		type : "CLOSE_DETAIL",
+		id:id,
+		button : button
+			}
+}
+
+export function handleDetails(id,item){
+	// console.log("HANDLE DETAILS action");
+	return{
+		type : "HANDLE_DETAILS",
+		id:id,
+		button : "details",
+		item : item
+	}
+}
+
+// export function addToItem(x){
+// 	console.log("word-----",x);
+// 	return{
+// 		type : "APPEND_LETTER",
+// 		x : x
+// 	}
+// }
+
+function changeEvent(text,id){
+	console.log("cccccccccccccc",text,id)
+	return axios.post('/api/changeEvent',{
+		id,
+		text
+	})
+}
+
+export function addToItem(x,id){
+	console.log(x,id)
+	return function(dispatch,getState){
+		return changeEvent(x,id)
+			.then(parseJSON)
+			.then(response => {
+				try{
+					handleEventOnload("","");
+					const value= getState();
+					const state = {
+							event : value.event,
+							monthArray : value.month.monthArray,
+							months : value.month.months,
+							year : value.month.year,
+							weekDate : value.month.weekDate,
+						}
+					dispatch(loadMonthEvent(state));
+					dispatch(loadEvent(state));
+				}
+				catch(e){
+
+				}
+			})
+	}
+}
+
+function adjustDisplay(id){
+	console.log(id);
+	return {
+		type: "ADJUST_DISPLAY",
 		id:id
 	}
 }
 
-export function closeDetail(id){
-	return{
-		type : "CLOSE_DETAIL",
-		id:id
-			}
+export function deleteEventList(id){
+	console.log("FROM ACTION DELTE >",id)
+	return function(dispatch,getState){
+		return deleteEvent(id)
+			.then(parseJSON)
+			.then(response =>{
+				try{
+					console.log(response.message);
+					dispatch(adjustDisplay(id));
+					const value= getState();
+					const state = {
+							event : value.event,
+							monthArray : value.month.monthArray,
+							months : value.month.months,
+							year : value.month.year,
+							weekDate : value.month.weekDate,
+						}
+					dispatch(loadMonthEvent(state));
+					dispatch(loadEvent(state));
+				}
+				catch(e){
+					console.log("Error with event delete",e);
+					alert(e);
+				}
+			})
+	}
 }

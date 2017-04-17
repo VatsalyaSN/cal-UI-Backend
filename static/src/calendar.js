@@ -6,6 +6,8 @@ import MonthView from './components/MonthView';
 import StartPage from './components/StartPage';
 import WeekView from './components/WeekView';
 import EventList from './components/EventList';
+import EventEdit from './components/EventEdit';
+
 import SignUp from './components/SignUp';
 import {Provider} from 'react-redux';
 import store from './store';
@@ -26,6 +28,7 @@ const router = (
 				<Route path="/monthview" component={MonthView}></Route>
 				<Route path="/weekview" component={WeekView}></Route>
 				<Route path="/eventlist" component={EventList}></Route>
+				<Route path="/edit" component={EventEdit}></Route>
 			</Route>
 		</Router>
 	</Provider>

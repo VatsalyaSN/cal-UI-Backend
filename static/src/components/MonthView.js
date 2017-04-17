@@ -20,10 +20,13 @@ const MonthView = React.createClass({
 	componentWillUnmount(){
 		// console.log("COMPOMENT WILL UNMOUNT");
 		this.props.handleOnUnmount();
+		this.props.closeDetail(this.props.date,"details");
 	},
 
 	render(){
-		const {date,dateArray,handlePrevious,handleNext,handleToday,logoutAndRedirect, months, monthArray, nextValue,weekDate,year,eventStoreMonth,moreButton,showMore,closeDetail} = this.props;
+		const {date,dateArray,handlePrevious,handleNext,handleToday,logoutAndRedirect,
+				 months, monthArray, nextValue,weekDate,year,eventStoreMonth,moreButton,
+				 showMore,closeDetail,handleDetails,details,popupItem,deleteEventList}= this.props;
 		let greeting;
 		if(this.props.username != '')
 			greeting = <h3>Hey {this.props.username}</h3>;
@@ -32,8 +35,12 @@ const MonthView = React.createClass({
 			<div>
 				{greeting}
 				<button onClick={logoutAndRedirect}>Logout</button>
-				<Header date={' '} months={months} year={year} today={handleToday} handleNext={handleNext} handlePrevious={handlePrevious}/>
-				<CalenderView dateArray={dateArray} months={months} date={date} weekDate={" "} event={eventStoreMonth} moreButton={moreButton} showMore={showMore} closeDetail={closeDetail}/>
+				<Header date={' '} months={months} year={year} today={handleToday} 
+					handleNext={handleNext} handlePrevious={handlePrevious}/>
+				<CalenderView dateArray={dateArray} months={months} date={date} weekDate={" "} 
+					event={eventStoreMonth} moreButton={moreButton} showMore={showMore} 
+					closeDetail={closeDetail} details={details} handleDetails={handleDetails}
+					popupItem={popupItem} deleteEventList={deleteEventList}/>
 			</div>
 			)
 	}

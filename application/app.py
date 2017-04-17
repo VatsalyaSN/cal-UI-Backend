@@ -131,20 +131,50 @@ def eventList():
 	}
 	events = []
 	for i in event:
-		# print("FETCHING LIST")
-		# print(i.date)
-		# print(i.starttime)
-		# print(i.endtime)
-		# print(i.event_detail)
+		print("FETCHING LIST")
+		print(i.date)
+		print(i.starttime)
+		print(i.endtime)
+		print(i.event_detail)
+		print(i.id)
 		items={
 				'date' : i.date,
 				'starttime':i.starttime,
 				'endtime':i.endtime,
-				'event_detail' : i.event_detail
+				'event_detail' : i.event_detail,
+				'event_id':i.id
 					}
 		events.append(items)
 	# print("EVENTS",events,len(events));
 	# print(items);
 	return jsonify(event=events,user=user,eventCount=len(events));
 	
+
+@app.route('/api/deleteEvent',methods=["POST"])
+def deleteEvent():
+	incoming = request.get_json();
+	print("ID OF EVENT", incoming)
+	event = Event.query.filter_by(id=incoming['id']).all()
+	for e in event:
+		db.session.delete(e)
+	try:
+		db.session.commit()
+	except IntegrityError:
+		print("Event does not exists");
+		return jsonify(message="Event does not exists"),409
+	print("MESSAGE DELETD");
+	return jsonify(message="Deleted");
+
+@app.route('/api/changeEvent',methods=['POST'])
+def changeEvent():
+	incoming = request.get_json();
+	print("iD ",incoming)
+	event = Event.query.filter_by(id=incoming['id']).first()
+	event.event_detail = incoming['text'];
+	try:
+		db.session.commit()
+	except IntegrityError:
+		print("EVENT could not be updated");
+		return jsonify(message="Event could not be updated")
+	return jsonify(message="Event updated successfully");
 	
