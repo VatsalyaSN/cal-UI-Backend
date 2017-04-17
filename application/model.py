@@ -54,3 +54,6 @@ class Event(db.Model):
 		self.starttime= starttime
 		self.endtime= endtime
 		self.event_detail = event_detail
+
+	def __getitem__(self,key):
+		return self.id;

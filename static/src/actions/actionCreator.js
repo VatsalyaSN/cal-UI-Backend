@@ -165,7 +165,9 @@ export function addEventList(date,starttime,endtime,event,id,email){
 			.then(parseJSON)
 			.then(response => {
 				try{
-					// console.log(response.event);
+					console.log("xxxxxxxxxxxxxxxxxxxxx")
+					console.log(response.event);
+					console.log(response.event.event_detail)
 					// console.log(response.event.time);
 					dispatch(displayEvent(response.event));
 				}catch(e){

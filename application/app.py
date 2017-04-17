@@ -4,6 +4,7 @@ from index import app, db
 from sqlalchemy.exc import IntegrityError
 from .utils.auth import generate_auth_token,verify_auth_token
 from flask_login import LoginManager,current_user,AnonymousUserMixin
+from operator import itemgetter
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -107,6 +108,7 @@ def event():
 		return jsonify(message="Event already exists"),409
 
 	event = Event.query.filter_by(user_id = incoming['id']).all()
+	event = sorted(event,key=itemgetter('event_id'))
 	items = {}
 	for i in event:
 		items = {
@@ -115,8 +117,8 @@ def event():
 				'endtime':i.endtime,
 				'event_detail' : i.event_detail
 					}
-		
-	# print(items);
+
+	# print(items,incoming['id']);
 	return jsonify(event=items);
 
 @app.route('/api/eventList', methods=['POST'])
@@ -131,12 +133,12 @@ def eventList():
 	}
 	events = []
 	for i in event:
-		print("FETCHING LIST")
-		print(i.date)
-		print(i.starttime)
-		print(i.endtime)
-		print(i.event_detail)
-		print(i.id)
+		# print("FETCHING LIST")
+		# print(i.date)
+		# print(i.starttime)
+		# print(i.endtime)
+		# print(i.event_detail)
+		# print(i.id)
 		items={
 				'date' : i.date,
 				'starttime':i.starttime,

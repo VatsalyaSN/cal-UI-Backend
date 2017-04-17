@@ -8,8 +8,8 @@ const EventForm = React.createClass({
 	getInitialState: function() {
     return {
       startDate: moment(),
-      starttime : 0,
-      endtime:0
+      starttime : "00:00",
+      endtime: "00:00"
     };
   },
 
@@ -19,6 +19,7 @@ const EventForm = React.createClass({
       startDate: date
     });
   },
+
   dateFormat(time){
   	console.log(time);
   	time = (time/3600);
@@ -26,7 +27,8 @@ const EventForm = React.createClass({
   	var hr = ("0"+/[0-9]+/.exec(time)).slice(-2);
   	var min=0;
   	time.toString().length == 3 || time.toString().length == 4 ? min=30 : min="00";
-  	return time = hr+":"+min;
+  	console.log(hr,min,hr+":"+min)
+    return time = hr+":"+min;
   },
 
   handleChangeTime:function(time){
@@ -45,7 +47,8 @@ const EventForm = React.createClass({
 
 	handleSubmit(e){
 		e.preventDefault();
-		const date = this.state.startDate.format("YYYY-MM-DD");
+      console.log(this.state.starttime,this.state.endtime);
+    const date = this.state.startDate.format("YYYY-MM-DD");
 		const starttime = this.state.starttime;
 		const endtime = this.state.endtime;
 		const eventItem = this.refs.eventItem.value;

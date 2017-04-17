@@ -8,8 +8,12 @@ const CalendarViewWeekly = React.createClass({
 		var date;
 		var day;
 		var num;
+		var range;
 		var flag=0;
-		var range = (value-1)*60+1;
+		if(value == 0)
+			range = (value-1)*60;
+		else
+			range = (value-1)*60+1;
 		var ranges = [];
 		var items=[];
 		var ph;

@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "29d0839e4b6bc8b63e77"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "be1ea10622163209c1c2"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -22495,7 +22495,9 @@
 			// dispatch(addEventAction(date,time,event))
 			return addEvent(date, starttime, endtime, event, id, email).then(parseJSON).then(function (response) {
 				try {
-					// console.log(response.event);
+					console.log("xxxxxxxxxxxxxxxxxxxxx");
+					console.log(response.event);
+					console.log(response.event.event_detail);
 					// console.log(response.event.time);
 					dispatch(displayEvent(response.event));
 				} catch (e) {
@@ -39528,8 +39530,9 @@
 			var date;
 			var day;
 			var num;
+			var range;
 			var flag = 0;
-			var range = (value - 1) * 60 + 1;
+			if (value == 0) range = (value - 1) * 60;else range = (value - 1) * 60 + 1;
 			var ranges = [];
 			var items = [];
 			var ph;
@@ -40177,8 +40180,8 @@
 	  getInitialState: function getInitialState() {
 	    return {
 	      startDate: (0, _moment2.default)(),
-	      starttime: 0,
-	      endtime: 0
+	      starttime: "00:00",
+	      endtime: "00:00"
 	    };
 	  },
 	
@@ -40188,6 +40191,7 @@
 	      startDate: date
 	    });
 	  },
+	
 	  dateFormat: function dateFormat(time) {
 	    console.log(time);
 	    time = time / 3600;
@@ -40195,6 +40199,7 @@
 	    var hr = ("0" + /[0-9]+/.exec(time)).slice(-2);
 	    var min = 0;
 	    time.toString().length == 3 || time.toString().length == 4 ? min = 30 : min = "00";
+	    console.log(hr, min, hr + ":" + min);
 	    return time = hr + ":" + min;
 	  },
 	
@@ -40214,6 +40219,7 @@
 	  },
 	  handleSubmit: function handleSubmit(e) {
 	    e.preventDefault();
+	    console.log(this.state.starttime, this.state.endtime);
 	    var date = this.state.startDate.format("YYYY-MM-DD");
 	    var starttime = this.state.starttime;
 	    var endtime = this.state.endtime;
