@@ -197,6 +197,42 @@ function toggleShowMore(state,id,show,button,item) {
 	}
 }
 
+function toggleShowMoreWeek(state,index,day,value,item,button){
+	console.log("item",item);
+	var arr = [new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),
+	new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),
+	new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),
+	new Array(),new Array(),new Array(),new Array(),new Array(),new Array()];
+	
+	for(var i=0;i<24;i++)
+	{
+		for(var j=0;j<7;j++){
+			// console.log(j,day,j==day,i,index,i==index);
+			if(i == index && j==day)
+			{
+				console.log("INSIDE WEEK TOGGLE");
+				arr[i][j] = value;
+
+			}
+			else
+				arr[i][j] = 0;
+		}
+	}
+	if(button == "more")
+	return Object.assign({},state,{showMoreWeek:arr});
+	else
+	{
+		if(value==true) 
+		{
+			console.log("INSIDE TRUE OF DETAILS",item)
+		return Object.assign({},state,{detailsWeek : arr, popupItem : item})
+
+		}
+		else
+		return Object.assign({},state,{detailsWeek : arr})
+	}
+}
+
 
 
 function monthReducer(state={}, action){
@@ -213,8 +249,8 @@ function monthReducer(state={}, action){
 						return getCurrentMonth(newObj,d,0,flag);
 
 				case 'HANDLE_NEXT':{
-							if(state.months === 'December')
-							  {
+						if(state.months === 'December')
+							{
 							  	const monthIndex = state.monthArray.indexOf(state.monthArray[d.getMonth()])
 							  	if(monthIndex == 0)
 							  		nextValue = 0;
@@ -222,25 +258,25 @@ function monthReducer(state={}, action){
 									nextValue = -monthIndex;
 							  	newObj = Object.assign({},state, {year : state.year+1 });
 							  	checkIfNotLeapYear(newObj);
-							  }	
-							else 
-							  	newObj = state;
+							}	
+						else 
+							newObj = state;
 
-							return getCurrentMonth(newObj,d,nextValue,flag);
+						return getCurrentMonth(newObj,d,nextValue,flag);
 					   }
 
 				case 'HANDLE_PREVIOUS':{
-					console.log("INSIDE MONTH REDUCER");
-							if(state.months === 'January')
-								 {
+						console.log("INSIDE MONTH REDUCER");
+						if(state.months === 'January')
+							{
 								nextValue = 13 - state.monthArray.indexOf(state.monthArray[d.getMonth()]);
 							  	newObj = Object.assign({},state, {year : state.year-1 });
 							  	checkIfNotLeapYear(newObj);
-							  }	
-							  else 
-							  	newObj = state;
-							   nextValue = --nextValue;
-							return getCurrentMonth(newObj,d,--nextValue,flag=1);
+							}	
+						else 
+							newObj = state;
+						nextValue = --nextValue;
+						return getCurrentMonth(newObj,d,--nextValue,flag=1);
 					    }
 
 				case "HANDLE_NEXT_WEEK":
@@ -263,10 +299,10 @@ function monthReducer(state={}, action){
 						return Object.assign({},state,{eventStoreMonth : action.newList});
 
 				case "SET_BUTTON":
-					return toggleShowMore(state,action.id,true,action.button,"");
+						return toggleShowMore(state,action.id,true,action.button,"");
 
 				case "CLOSE_DETAIL":
-					return toggleShowMore(state,action.id,false,action.button,"");
+						return toggleShowMore(state,action.id,false,action.button,"");
 
 				case "MONTH_CLEAR":
 						return Object.assign({},state,{eventStoreMonth : []});
@@ -275,11 +311,20 @@ function monthReducer(state={}, action){
 						return Object.assign({},state,{eventStore : []});
 				
 				case "HANDLE_DETAILS":
-					return toggleShowMore(state,action.id,true,action.button,action.item);
+						return toggleShowMore(state,action.id,true,action.button,action.item);
 				
 				case "APPEND_LETTER":
-					console.log("FROM APPEND_LETTER", state.popupItem+action.x)
-					return Object.assign({},state,{popupItem : state.popupItem+action.x})
+						console.log("FROM APPEND_LETTER", state.popupItem+action.x)
+						return Object.assign({},state,{popupItem : state.popupItem+action.x})
+
+				case "SET_WEEK_BUTTON":
+						return toggleShowMoreWeek(state,action.value,action.day,true,"","more");
+
+				case "CLOSE_WEEK_BUTTON":
+						return toggleShowMoreWeek(state,action.value,action.day,false,"",action.button);
+
+				case "HANDLE_DETAILS_WEEK":
+						return toggleShowMoreWeek(state,action.value,action.day,true,action.item,"details");
 
 				default : 
 						return state;

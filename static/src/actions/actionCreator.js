@@ -321,20 +321,20 @@ export function loadEvent(state){
 		hr = extractNum.splice(0,2).join('');
 		mins = extractNum.join('');
 		event.end = (hr-1)*60 + parseInt(mins);
-		if(event.start > event.end){
-			var temp = event.start;
-			event.start = event.end;
-			event.end = temp;
-		}
-		event.ph = event.end - event.start;
+		// if(event.start > event.end){
+		// 	var temp = event.start;
+		// 	event.start = event.end;
+		// 	event.end = temp;
+		// }
+		// event.ph = event.end - event.start;
 	  }
 
 		for(i=0;i<newList.length;i++){
 			event = newList[i];
-			event.height = event.end - event.start;
+			// event.height = event.end - event.start;
 			finalList.push(event);
 		}
-		// console.log("FINALOS++IST ",finalList);
+		console.log("FINALOS++IST ",finalList);
 
 	
 	return{
@@ -542,11 +542,12 @@ export function handleOnload(viewType){
 	  }
 }
 
-export function moreButton(id){
+export function moreButton(id,showMore){
 	return {
 		type : "SET_BUTTON",
 		id:id,
-		button : "more"
+		button : "more",
+		showMore : showMore
 	}
 }
 
@@ -644,5 +645,32 @@ export function deleteEventList(id){
 					alert(e);
 				}
 			})
+	}
+}
+
+export function moreButtonWeek(value,day){
+	return {
+		type : "SET_WEEK_BUTTON",
+		value:value,
+		day : day
+	}
+}
+
+export function closeMoreButtonWeek(value,day,button){
+	return{
+		type : "CLOSE_WEEK_BUTTON",
+		value:value,
+		day : day,
+		button:button
+	}
+}
+
+export function handleDetailsWeek(value,day,item){
+	// console.log("HANDLE DETAILS action",day);
+	return{
+		type : "HANDLE_DETAILS_WEEK",
+		value:value,
+		day : day,
+		item : item
 	}
 }

@@ -50,7 +50,13 @@ const CalendarViewWeekly = React.createClass({
 		// console.log(event);
 		// console.log("ITTTEMMMS ",items)
 
-		return <Time time={time} item={items}/>
+		return <Time time={time} item={items} showMoreWeek={this.props.showMoreWeek[value]} 
+				detailsWeek={this.props.detailsWeek[value]} month={this.props.month}
+				showMoreWeekComplete={this.props.showMoreWeek} value={value} 
+				moreButtonWeek={this.props.moreButtonWeek} date={this.props.weekDate}
+				closeMoreButtonWeek={this.props.closeMoreButtonWeek} 
+				handleDetailsWeek={this.props.handleDetailsWeek} popupItem={this.props.popupItem}
+				deleteEventList={this.props.deleteEventList}/>
 	},
 
 	handleEmptyEvent(){

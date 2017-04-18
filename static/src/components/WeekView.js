@@ -18,10 +18,13 @@ const WeekView = React.createClass({
 
 	componentWillUnmount(){
 		this.props.handleOnUnmount();
+		this.props.closeMoreButtonWeek(this.props.value,this.props.dayValue,"more")
 	},
 	
 	render(){
-		const {date,months,monthArray,year,getCurrentWeek,handleNextWeek,handlePreviousWeek,handleOnload,weekDate,loadEvent,logoutAndRedirect} = this.props;
+		const {date,months,monthArray,year,getCurrentWeek,handleNextWeek,handlePreviousWeek,
+				handleOnload,weekDate,loadEvent,logoutAndRedirect,showMoreWeek,detailsWeek,
+				moreButtonWeek,closeMoreButtonWeek,handleDetailsWeek,popupItem,deleteEventList} = this.props;
 		let greeting;
 		if(this.props.username != '')
 			greeting = <h3>Hey {this.props.username}</h3>;
@@ -29,8 +32,14 @@ const WeekView = React.createClass({
 			<div>
 				{greeting}
 				<button onClick={logoutAndRedirect}>Logout</button>
-				<Header date={weekDate} months={months} year={year} handleOnload={handleOnload} handleNext={handleNextWeek} handlePrevious={handlePreviousWeek} today={getCurrentWeek} loadEvent={loadEvent}/>
-				<CalendarViewWeekly weekDate={weekDate} event={this.props.eventStore} months={months} monthArray={monthArray}/>
+				<Header date={weekDate} months={months} year={year} handleOnload={handleOnload}
+				 handleNext={handleNextWeek} handlePrevious={handlePreviousWeek} 
+				 today={getCurrentWeek} loadEvent={loadEvent}/>
+				<CalendarViewWeekly weekDate={weekDate} event={this.props.eventStore} 
+				 months={months} monthArray={monthArray} showMoreWeek={showMoreWeek} 
+				 detailsWeek={detailsWeek} moreButtonWeek={moreButtonWeek} popupItem={popupItem}
+				 closeMoreButtonWeek={closeMoreButtonWeek} handleDetailsWeek={handleDetailsWeek}
+				 deleteEventList={deleteEventList}/>
 			</div>
 			)
 	}
