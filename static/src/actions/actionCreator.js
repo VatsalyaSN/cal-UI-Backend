@@ -578,18 +578,21 @@ export function handleDetails(id,item){
 // 	}
 // }
 
-function changeEvent(text,id){
-	console.log("cccccccccccccc",text,id)
+function changeEvent(text,date,starttime,endtime,id){
+	console.log("cccccccccccccc",text,date,starttime,endtime,id)
 	return axios.post('/api/changeEvent',{
 		id,
-		text
+		text,
+		date,
+		starttime,
+		endtime
 	})
 }
 
-export function addToItem(x,id){
-	console.log(x,id)
+export function addToItem(eventEdit,date,starttime,endtime,id){
+	console.log(eventEdit,id)
 	return function(dispatch,getState){
-		return changeEvent(x,id)
+		return changeEvent(eventEdit,date,starttime,endtime,id)
 			.then(parseJSON)
 			.then(response => {
 				try{

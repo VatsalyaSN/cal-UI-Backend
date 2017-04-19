@@ -1,6 +1,5 @@
 import React from 'react';
 import CellData from './CellData';
-import TimeItem from './TimeItem';
 import EventDetail from './EventDetail';
 import TableBodyItems from './TableBodyItems';
 

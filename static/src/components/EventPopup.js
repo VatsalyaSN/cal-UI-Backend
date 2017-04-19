@@ -28,11 +28,11 @@ const EventPopup = React.createClass({
 					:
 				<span onClick={()=>this.props.closeDetail(this.props.date,"details")} className="button">&times;</span>
 			}
-				<span>{this.props.popupItem.eventItem}</span>
-				<span>{this.props.popupItem.starttime}</span> 
-				<span>{this.props.popupItem.endtime}</span> 
-				<button onClick={this.handleDeleteClick}>Delete</button>
-				<button><Link to="/edit">Edit Event</Link></button>
+				<span className="eventDetails">{this.props.popupItem.eventItem}</span>
+				<span className="eventCaption">when</span>
+				<span className="eventStart">{this.props.popupItem.starttime}-{this.props.popupItem.endtime}</span> 
+				<button onClick={this.handleDeleteClick} className="deleteBtn">Delete</button>
+				<button className="editLinkBtn"><Link to="/edit">Edit Event</Link></button>
 			</div>
 			)
 		}

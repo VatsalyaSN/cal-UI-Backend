@@ -173,6 +173,13 @@ def changeEvent():
 	print("iD ",incoming)
 	event = Event.query.filter_by(id=incoming['id']).first()
 	event.event_detail = incoming['text'];
+	if incoming['date'] is not None:
+		event.date = incoming['date']
+	if incoming['starttime'] is not None:
+		event.starttime = incoming['starttime']
+	if incoming['endtime'] is not None:
+		event.endtime = incoming['endtime']
+		
 	try:
 		db.session.commit()
 	except IntegrityError:
