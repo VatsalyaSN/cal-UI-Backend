@@ -2,11 +2,15 @@ import React from 'react';
 import render from 'react-dom';
 import TableHeader from './TableHeader';
 import TableBody from  './TableBody';
+import Mdisplay from './Mdisplay';
+import {Icon} from 'react-fa';
+import MonthOption from './MonthOption';
+import 'react-fa/node_modules/font-awesome/css/font-awesome.css'
 
 
 const CalenderView = React.createClass({
 	
-	renderEvents(event,date,moreButtonAction,x){
+	renderEvents(event,date,moreButtonAction,lastWeek,nextWeek,x){
 		var items=[];
 		var day;
 		var dateN;
@@ -43,39 +47,69 @@ const CalenderView = React.createClass({
 					showMore={this.props.showMore[x]} closeDetail={this.props.closeDetail} 
 					month={this.props.months} details={this.props.details[x]} 
 					handleDetails={this.props.handleDetails} popupItem={this.props.popupItem}
-					deleteEventList={this.props.deleteEventList}/>
+					deleteEventList={this.props.deleteEventList} handleMdisplay={this.props.handleMdisplay}
+					year={this.props.year} lastWeek={lastWeek} nextWeek={nextWeek} 
+					id={this.props.id}/>
 
+	},
+	handleClick(){
+		const d=new Date();
+		this.props.currentYear();
+		this.props.handleMonth(d.getMonth());
+	},
+
+	handleNext(){
+		this.props.caretNext();
+		this.props.handleMonth(0);
+	},
+
+	handlePrevious(){
+		this.props.caretPrevious();
+		this.props.handleMonth(0);
 	},
 
 	render(){
-		return(
-			<div>
-				<table className="monthtable">
-					<TableHeader weekDate={this.props.weekDate}/>
-					<tbody>
+			return(
+		<div className="cal">
+				<p className="addSpace"></p>
+				<span className="fa fcaretr" onClick={this.handleNext}>
+					<Icon name="caret-right" size="2x" className="fa fa-caret-right caretR"/>
+				</span>
+					<span className="yrSpan" onClick={this.handleClick}>{this.props.year}</span>
+				<span className="fa fcaretl" onClick={this.handle1Previous}>
+					<Icon name="caret-left" size="2x" className="fa fa-caret-left caretL"/>
+				</span>
+				<p className="addSpace"></p>
+
+				<MonthOption handleMonth={this.props.handleMonth} months={this.props.months} year={this.props.year} 
+						handleMdisplay={this.props.handleMdisplay} monthArray={this.props.monthArray}/>
+			
+			<table className="monthtable">
+			<TableHeader weekDate={this.props.weekDate}/>
+			<tbody>
+				{
+				this.renderEvents(this.props.event,this.props.date[0],this.props.moreButton,this.props.lastWeek," ",0)
+				}
+				{
+				this.renderEvents(this.props.event,this.props.date[1],this.props.moreButton," "," ",1)
+				}
 					{
-						this.renderEvents(this.props.event,this.props.date[0],this.props.moreButton,0)
+						this.renderEvents(this.props.event,this.props.date[2],this.props.moreButton," "," ",2)
 					}
 					{
-						this.renderEvents(this.props.event,this.props.date[1],this.props.moreButton,1)
+						this.renderEvents(this.props.event,this.props.date[3],this.props.moreButton," "," ",3)
 					}
 					{
-						this.renderEvents(this.props.event,this.props.date[2],this.props.moreButton,2)
+						this.renderEvents(this.props.event,this.props.date[4],this.props.moreButton," ",this.props.nextWeek,4)
 					}
 					{
-						this.renderEvents(this.props.event,this.props.date[3],this.props.moreButton,3)
-					}
-					{
-						this.renderEvents(this.props.event,this.props.date[4],this.props.moreButton,4)
-					}
-					{
-						this.props.date[5][0]!=" " ? 
-						this.renderEvents(this.props.event,this.props.date[5],this.props.moreButton,5) : null
+						this.props.date[5][0]!= " " ? this.renderEvents(this.props.event,this.props.date[5],this.props.moreButton," ",this.props.nextWeek,5) : null
 					}
 					</tbody>
 				</table>
 			</div>
 			)
+
 	}
 })
 

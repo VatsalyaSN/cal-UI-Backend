@@ -1,6 +1,5 @@
 import React from 'react';
 import CellData from './CellData';
-import CloseDetail from './CloseDetail';
 import EventDetail from './EventDetail';
 import EventPopup from './EventPopup';
 
@@ -36,7 +35,6 @@ renderEvents(items)
    },
 
    renderButton(items,moreButtonAction){
-      // console.log("IN BUTTON FUNC")
       return <a className="tbodya" href="#" onClick={()=>moreButtonAction(this.props.date)
                }>+{items.length - 2} more..</a>
    },
@@ -46,10 +44,64 @@ renderEvents(items)
                }>+{items.length - 2} more..</a>
    },
 
+   handleDayColor(date){
+      var d = new Date();
+      var monthNames = ["January", "February", "March", "April", "May", "June",
+               "July", "August", "September", "October", "November", "December"];
+      if(date == d.getDate() && this.props.year == d.getFullYear() && this.props.month == monthNames[d.getMonth()])
+         return "tbodytd today";
+      else
+         return "tbodytd";
+   },
+
+   handleOnClick(){
+      var monthArray=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September','October','November', 'December'];
+      var month,year;
+      if(this.props.date == " "){
+         if((monthArray.indexOf(this.props.month)-1) == -1)
+            {
+            month=monthArray[11]
+            year = this.props.year-1
+            }
+         else
+         {
+            month=monthArray[monthArray.indexOf(this.props.month)-1]
+            year = this.props.year
+         }
+         
+         this.props.handleMdisplay(this.props.lastWeek,month,year,this.props.item)
+      }
+      else if(this.props.lastWeek == " " || this.props.lastWeek == undefined && this.props.date == " "){
+         if((monthArray.indexOf(this.props.month)+1) == 12)
+         {
+            month=monthArray[0]
+            year = this.props.year+1
+         }
+         else{
+            month=monthArray[monthArray.indexOf(this.props.month)+1]
+            year=this.props.year
+         }
+
+         this.props.handleMdisplay(this.props.nextWeek, month,year,this.props.item)
+      }
+   },
+
 render()
  {
 	return (
-		<td className="tbodytd"><span className="tbodyspan">{this.props.date}</span>
+		<td className={this.handleDayColor(this.props.date)} 
+         onClick={()=>this.handleOnClick}>
+      {
+         this.props.date != " " ? <p className="tbodyspan">{this.props.date}</p> : 
+                                    <p className="tbodyspan tbodyspanOld">
+                                    {this.props.lastWeek}
+                                    </p>
+
+      }
+      {
+         this.props.lastWeek == " " || this.props.lastWeek == undefined && this.props.date == " "? 
+            <p className="tbodyspanOld">{this.props.nextWeek}</p> :  " " 
+      }
 
             <div className="tbodydiv"><ul className="tbodyul">
             {this.renderEvents(this.props.item)
@@ -65,13 +117,13 @@ render()
                      <EventPopup
                            date={this.props.date} popupItem={this.props.popupItem} 
                            closeDetail={this.props.closeDetail} show={this.props.show}
-                           deleteEventList={this.props.deleteEventList}/> 
+                           deleteEventList={this.props.deleteEventList} id={this.props.id}/> 
                            : 
                this.props.detailsWeek && this.props.show == "week" ? 
                      <EventPopup date={this.props.date} popupItem={this.props.popupItem} 
                         closeMoreButtonWeek={this.props.closeMoreButtonWeek} 
                         deleteEventList={this.props.deleteEventList} value={this.props.value} 
-                        day={this.props.dayValue} show={this.props.show}/>
+                        day={this.props.dayValue} show={this.props.show} id={this.props.id}/>
                            : " "
            }
             </ul></div>

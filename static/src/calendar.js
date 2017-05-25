@@ -4,11 +4,8 @@ import App from './components/App';
 import Main from './components/Main';
 import MonthView from './components/MonthView';
 import StartPage from './components/StartPage';
-import WeekView from './components/WeekView';
-import EventList from './components/EventList';
 import EventEdit from './components/EventEdit';
 
-import SignUp from './components/SignUp';
 import {Provider} from 'react-redux';
 import store from './store';
 import * as actionCreators from './actions/actionCreator';
@@ -24,11 +21,8 @@ const router = (
 		<Router history={browserHistory}>
 			<Route path="/" component={App}>
 				<IndexRoute component={StartPage}></IndexRoute>
-				<Route path="/signup" component={SignUp}></Route>
-				<Route path="/monthview" component={MonthView}></Route>
-				<Route path="/weekview" component={WeekView}></Route>
-				<Route path="/eventlist" component={EventList}></Route>
-				<Route path="/edit" component={EventEdit}></Route>
+				<Route path="/monthview" component={MonthView} />
+				<Route path="/edit" component={EventEdit} />
 			</Route>
 		</Router>
 	</Provider>

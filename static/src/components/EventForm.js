@@ -14,20 +14,20 @@ const EventForm = React.createClass({
   },
 
   handleChange: function(date) {
-    console.log(date,date.toDate(),date.format("YYYY-MM-DD"));
+    // console.log(date,date.toDate(),date.format("YYYY-MM-DD"));
     this.setState({
       startDate: date
     });
   },
 
   dateFormat(time){
-  	console.log(time);
+  	// console.log(time);
   	time = (time/3600);
-  	console.log(time)
+  	// console.log(time)
   	var hr = ("0"+/[0-9]+/.exec(time)).slice(-2);
   	var min=0;
   	time.toString().length == 3 || time.toString().length == 4 ? min=30 : min="00";
-  	console.log(hr,min,hr+":"+min)
+  	// console.log(hr,min,hr+":"+min)
     return time = hr+":"+min;
   },
 
@@ -47,7 +47,7 @@ const EventForm = React.createClass({
 
 	handleSubmit(e){
 		e.preventDefault();
-      console.log(this.state.starttime,this.state.endtime);
+      // console.log(this.state.starttime,this.state.endtime);
     const date = this.state.startDate.format("YYYY-MM-DD");
 		const starttime = this.state.starttime;
 		const endtime = this.state.endtime;

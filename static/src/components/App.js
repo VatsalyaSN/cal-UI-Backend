@@ -18,7 +18,6 @@ function mapStateToProps(state){
 		weekDate : state.month.weekDate,
 		nextWeekValue : state.month.nextWeekValue,
 		event : state.event,
-		eventStore : state.month.eventStore,
 		eventStoreMonth : state.month.eventStoreMonth,
 		showMore : state.month.showMore,
 		email:state.auth.email,
@@ -29,8 +28,8 @@ function mapStateToProps(state){
 		popupItem : state.month.popupItem,
 		lastWeek : state.month.lastWeek,
 		nextWeek : state.month.nextWeek,
-		showMoreWeek : state.month.showMoreWeek,
-		detailsWeek:state.month.detailsWeek,
+		mObject : state.month.mObject,
+		plusButton:state.month.plusButton,
 	}
 }
 

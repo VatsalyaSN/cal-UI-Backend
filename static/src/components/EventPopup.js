@@ -10,16 +10,16 @@ const EventPopup = React.createClass({
 			this.props.closeDetail(this.props.date,"details")
 	},
 	handleDeleteClick(){
-		console.log("handleDeleteClick------");
+		// console.log("handleDeleteClick------");
 		if(this.props.show == "week")
 			this.props.closeMoreButtonWeek(this.props.value,this.props.day,"details")
 		else
 			this.props.closeDetail(this.props.date,"details");
-		this.props.deleteEventList(this.props.popupItem.eventId);
+		this.props.deleteEventList(this.props.popupItem.eventId,this.props.id);
 	},
 
 	render(){
-		console.log("FROm EVENTPOPUP ",this.props.popupItem,this.props);
+		// console.log("FROm EVENTPOPUP ",this.props.popupItem,this.props);
 		return(
 			<div className="eventPopup">
 			{

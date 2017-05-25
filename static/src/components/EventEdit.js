@@ -20,20 +20,20 @@ const EventEdit = React.createClass({
   },
 
   handleChangeDate: function(date) {
-    console.log(date,date.toDate(),date.format("YYYY-MM-DD"));
+    // console.log(date,date.toDate(),date.format("YYYY-MM-DD"));
     this.setState({
       startDate: date
     });
   },
 
   dateFormat(time){
-  	console.log(time);
+  	// console.log(time);
   	time = (time/3600);
-  	console.log(time)
+  	// console.log(time)
   	var hr = ("0"+/[0-9]+/.exec(time)).slice(-2);
   	var min=0;
   	time.toString().length == 3 || time.toString().length == 4 ? min=30 : min="00";
-  	console.log(hr,min,hr+":"+min)
+  	// console.log(hr,min,hr+":"+min)
     return time = hr+":"+min;
   },
 
@@ -56,13 +56,13 @@ const EventEdit = React.createClass({
 		const date = this.state.startDate.format("YYYY-MM-DD");
 		const starttime = this.state.starttime;
 		const endtime = this.state.endtime;
-		console.log("XXXXXX______XXXXXX",this.props.popupItem.eventId,this.props.popupItem)
+		// console.log("XXXXXX______XXXXXX",this.props.popupItem.eventId,this.props.popupItem)
 		this.props.addToItem(character,date,starttime,endtime,this.props.popupItem.eventId);
 		setTimeout(function(){browserHistory.goBack()},100);
 	},
 
 render(){
-	console.log(this.props.popupItem);
+	// console.log(this.props.popupItem);
 	return(
 			<div className="editDiv">
 				<button className="editSave" onClick={this.handleChange}>Save</button>
