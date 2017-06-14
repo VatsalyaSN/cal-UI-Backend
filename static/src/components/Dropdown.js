@@ -3,6 +3,12 @@ import { Link } from 'react-router';
 
 
 const Dropdown = React.createClass({
+	handlesignout(){
+		console.log("IN DROPDOWN SIGNOUT")
+      this.props.logoutAndRedirect();
+      window.history.back();
+	},
+
 	render(){
 		let greeting;
 		// console.log(this.props.email)
@@ -16,7 +22,7 @@ const Dropdown = React.createClass({
 				<div className="circle">{greeting}</div>
 				<p className="greets">{this.props.email ? this.props.email : "Guest User"}</p>
 				<p onClick={()=>this.props.googleAccSync(this.props.id)} className="googlesync">Sync with Google Acc</p>
-				<button onClick={this.props.logoutAndRedirect} className="signout">Sign out</button>
+				<button onClick={()=>this.handlesignout()} className="signout">Sign out</button>
 			</div>
 			)
 	}

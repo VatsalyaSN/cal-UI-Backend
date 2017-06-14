@@ -55,34 +55,8 @@ renderEvents(items)
    },
 
    handleOnClick(){
-      var monthArray=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September','October','November', 'December'];
-      var month,year;
-      if(this.props.date == " "){
-         if((monthArray.indexOf(this.props.month)-1) == -1)
-            {
-            month=monthArray[11]
-            year = this.props.year-1
-            }
-         else
-         {
-            month=monthArray[monthArray.indexOf(this.props.month)-1]
-            year = this.props.year
-         }
-         
-         this.props.handleMdisplay(this.props.lastWeek,month,year,this.props.item)
-      }
-      else if(this.props.lastWeek == " " || this.props.lastWeek == undefined && this.props.date == " "){
-         if((monthArray.indexOf(this.props.month)+1) == 12)
-         {
-            month=monthArray[0]
-            year = this.props.year+1
-         }
-         else{
-            month=monthArray[monthArray.indexOf(this.props.month)+1]
-            year=this.props.year
-         }
-
-         this.props.handleMdisplay(this.props.nextWeek, month,year,this.props.item)
+      if(this.props.date != " "){
+         this.props.handleMdisplay(this.props.date, this.props.month,this.props.year,this.props.item)
       }
    },
 
@@ -90,7 +64,7 @@ render()
  {
 	return (
 		<td className={this.handleDayColor(this.props.date)} 
-         onClick={()=>this.handleOnClick}>
+         onClick={()=>this.handleOnClick()}>
       {
          this.props.date != " " ? <p className="tbodyspan">{this.props.date}</p> : 
                                     <p className="tbodyspan tbodyspanOld">

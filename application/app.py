@@ -27,7 +27,6 @@ from oauth2client import GOOGLE_AUTH_URI
 from oauth2client import GOOGLE_REVOKE_URI
 from oauth2client import GOOGLE_TOKEN_URI
 
-import platform
 
 
 app.config.update(dict(
@@ -41,10 +40,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-@login_manager.user_loader
-def load_user(id):
-	print("in the load user")
-	return User.query.get(int(id))
+
 
 class Anonymous(AnonymousUserMixin):
 	def __init__(self):
@@ -52,9 +48,6 @@ class Anonymous(AnonymousUserMixin):
 
 login_manager.anonymous_user = Anonymous
 
-@app.before_request
-def before_request():
-	return current_user
 
 @app.route('/', methods=['GET'])
 def index():
@@ -525,7 +518,6 @@ def index_api():
 	except client.AccessTokenRefreshError:
   		print('The credentials have been revoked or expired, please re-run'
          	   'the application to re-authorize.')
-  	print(platform.system())
   	
 	return redirect('/monthview')
 
