@@ -29,6 +29,7 @@ A Google account with Google Calendar enabled.<br />
 `npm install`
 - In cal-UI-Backend folder, open authorize.py file and add client id and client secret generated in the previous step
 - Also add the url to "redirect_url_path" you want to open the project on in the authorize.py file 
+- Download the credentials created in step-1 and rename the file as client_secret.json and place it in cal-UI-Backend > application folader.
 
 #### Step 3: Domain verification
 
