@@ -76,7 +76,7 @@ const CalenderView = React.createClass({
 					<Icon name="caret-right" size="2x" className="fa fa-caret-right caretR"/>
 				</span>
 					<span className="yrSpan" onClick={this.handleClick}>{this.props.year}</span>
-				<span className="fa fcaretl" onClick={this.handle1Previous}>
+				<span className="fa fcaretl" onClick={this.handlePrevious}>
 					<Icon name="caret-left" size="2x" className="fa fa-caret-left caretL"/>
 				</span>
 				<p className="addSpace"></p>

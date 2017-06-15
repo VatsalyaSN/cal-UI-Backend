@@ -26,6 +26,8 @@ import json
 from oauth2client import GOOGLE_AUTH_URI
 from oauth2client import GOOGLE_REVOKE_URI
 from oauth2client import GOOGLE_TOKEN_URI
+from authorize import client_id, client_secret,redirect_url_path
+
 
 
 
@@ -33,8 +35,8 @@ app.config.update(dict(
 	PREFERRED_URL_SCHEME = 'https'
 	))
 
-CLIENT_ID = "732981475648-rvae53s3qed010el7a7vk6vm4o68m9i3.apps.googleusercontent.com"
-CLIENT_SECRET = "0AYpyjkEbQO_P5BQ5CcJUPHu"
+CLIENT_ID = client_id
+CLIENT_SECRET = client_secret
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -51,6 +53,7 @@ login_manager.anonymous_user = Anonymous
 
 @app.route('/', methods=['GET'])
 def index():
+	print(client_id)
 	print("hello worlllllllddddd")
 	return render_template('index.html')
 
@@ -206,9 +209,8 @@ def event():
 
 @app.route('/api/eventList', methods=['POST'])
 def eventList():
-	print("SESSSION>>>>>>>>>>---------------",session)
+	print("'"+redirect_url_path+"oauth2callback"+"'")
 	incoming = request.get_json();
-	print(incoming['id']);
 	session["id"] = incoming["id"]
 	event = Event.query.filter_by(user_id = incoming['id']).all()
 	user = User.query.filter_by(id= incoming['id']).first()
@@ -301,14 +303,11 @@ def syncAccount():
 	flow = client.flow_from_clientsecrets(
 			'/home/vatsalya/Documents/login/cal/application/client_secret.json',
     		scope='https://www.googleapis.com/auth/calendar',
-    		redirect_uri='https://2d38a1b8.ngrok.io/oauth2callback')
+    		redirect_uri=redirect_url_path+"oauth2callback")
 	flow.params['access_type'] = 'offline'
 	flow.params['include_granted_scopes'] ="true"
 	flow.params['approval_prompt']="force"
-	print("SESSION from syncAcc>>>>>",session)
   	auth_uri = flow.step1_get_authorize_url()
-  	print(auth_uri, flow, flow.step1_get_authorize_url)
-  	# return dr.execute_script("$(window.open(auth_uri,'width=800, height = 600'))")
   	return webbrowser.open_new_tab(auth_uri)
 
 
@@ -322,7 +321,7 @@ def oauth2callback():
   	flow = client.flow_from_clientsecrets(
 			'/home/vatsalya/Documents/login/cal/application/client_secret.json',
     		scope='https://www.googleapis.com/auth/calendar',
-    		redirect_uri='https://2d38a1b8.ngrok.io/oauth2callback')
+    		redirect_uri=redirect_url_path+"oauth2callback")
 	flow.params['access_type'] = 'offline'
 	flow.params['include_granted_scopes'] ="true"
 	flow.params['approval_prompt']="force"
@@ -348,31 +347,10 @@ def oauth2callback():
 
 @app.route('/index_api')
 def index_api():
-	# threading.Timer(20.0, index_api).start()
-	print("SESSION from index..>>>>>",session)
 	print("IN INDEX /...")
 	user = User.query.filter_by(id=session['id']).first()
 	creds = user.auth
 	credentials = client.OAuth2Credentials.from_json(creds)
-	# credentials=AccessTokenCredentials(creds, 'user-agent-value');
-	# print(user,user.auth)
-	# print(AccessTokenCredentials(user.auth, 'user-agent-value').authorize(httplib2.Http()))
-	# flags = tools.argparser.parse_args(args=[])
-	# print("FLAGS____",flags)
-	# storage = Storage('auth.txt')
-	# credentials=AccessTokenCredentials(creds, 'user-agent-value');
-	# print("credentials... ",credentials)
-	# if credentials is None or credentials.invalid:
-	# 	# parser = argparse.ArgumentParser(parents=[tools.argparser])
-	# 	credentials = storage.get()
-	# 	flow = OAuth2WebServerFlow(CLIENT_ID,
- #      				CLIENT_SECRET,
- #      				"https://www.googleapis.com/auth/calendar")
-	# 	request.base_url = request.base_url.replace('http://','https://')
-	# 	flow.redirect_uri = request.base_url
-	# 	credentials = tools.run_flow(flow, storage, flags)
-
-	# print("CREDENTIALS FROM INDEXAPI", credentials)
 	if credentials.access_token_expired:
 		return redirect(url_for('syncAccount'))
 
@@ -385,7 +363,7 @@ def index_api():
 	body={
 		    'id': str(uuid.uuid1()),
 		    'type': 'web_hook',
-		    'address':'https://2d38a1b8.ngrok.io/notifications',
+		    'address':redirect_url_path+"notifications",
 		    'params':{
 		      'ttl': 864000
 		    		}
@@ -405,12 +383,10 @@ def index_api():
 
 	if user.sync_token is None:
 		calendar_Watch = service.events().watch(calendarId='primary',body=body).execute()
-		print("kkkkkkkgggggggggg")
 		print calendar_Watch.get('nextSyncToken')
 
 	else:
 		calendar_Watch = service.events().watch(calendarId='primary',body=body).execute()
-		print("kkkkkkkgggggggggg")
 		print calendar_Watch.get('nextSyncToken')
 
 	try:
@@ -518,8 +494,8 @@ def index_api():
 	except client.AccessTokenRefreshError:
   		print('The credentials have been revoked or expired, please re-run'
          	   'the application to re-authorize.')
-  	
-	return redirect('/monthview')
+  	print(redirect_url_path+'/monthview')
+	return redirect(redirect_url_path+'monthview')
 
 
 @app.route('/api/data',methods=['GET'])
@@ -744,8 +720,6 @@ def dataFetch():
 @app.route('/notifications',methods=['POST'])
 def calNotification():
 	incoming = request.data
-	user = before_request
-	print(user)
 	print(session)
 	print("INCOMING DATA FROM WATCH:",incoming,request.get_json(),request)
 	return dataFetch();
