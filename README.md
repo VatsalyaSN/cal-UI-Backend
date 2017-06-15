@@ -25,7 +25,7 @@ A Google account with Google Calendar enabled.<br />
 
 - Run the below command in terminal<br />
 `https://github.com/VatsalyaSN/cal-UI-Backend.git`
-- Navigate to cal-UI-Backend folder and run the command<br />
+- Navigate to cal-UI-Backend > static folder and run the command<br />
 `npm install`
 - In cal-UI-Backend folder, open authorize.py file and add client id and client secret generated in the previous step
 - Also add the url to "redirect_url_path" you want to open the project on in the authorize.py file 
