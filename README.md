@@ -36,4 +36,7 @@ A Google account with Google Calendar enabled.<br />
 url you want to open your project on.
 - Click on "Take me there" button and click "Add a property" button and add the url 
 - Now click on the url in the 3rd option of the instruction of HTML file verification method(the google verification file is already in the template folder)
+
+#### Step 4: Running the application
+- Navigate to cal-UI-Backend folder and run `python manage.py`
 - Once the domain is verified, the project will open in the url specified. 
